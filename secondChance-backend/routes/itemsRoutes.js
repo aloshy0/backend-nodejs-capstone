@@ -20,3 +20,15 @@ router.get("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+router.get("/seed", async (req, res) => {
+  const db = await connectToDatabase();
+
+  await db.collection("items").insertMany([
+    { title: "Laptop", description: "Good condition gaming laptop" },
+    { title: "iPhone", description: "Used iPhone 13, excellent battery" },
+    { title: "Headphones", description: "Noise cancelling headphones" }
+  ]);
+
+  res.json({ message: "Sample items added" });
+});
