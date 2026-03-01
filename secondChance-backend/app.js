@@ -9,13 +9,17 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// 👇 THIS IS CRITICAL
 app.use(express.static(path.join(__dirname, "public")));
 
+// API routes
 app.use("/api/items", itemsRoutes);
 app.use("/api/auth", authRoutes);
 
+// 👇 THIS IS CRITICAL
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
