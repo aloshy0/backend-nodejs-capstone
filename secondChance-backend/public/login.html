@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - SecondChance Marketplace</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      margin: 0;
+    }
+
+    header {
+      background: #2f4154;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    .form-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2f4154;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1f2d3a;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>SecondChance Marketplace</h2>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register.html">Register</a>
+  </div>
+</header>
+
+<div class="form-container">
+  <h3>Login</h3>
+
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
+
+  const data = await response.json();
+  alert(data.message || "Login attempt complete");
+});
+</script>
+
+</body>
+</html>
