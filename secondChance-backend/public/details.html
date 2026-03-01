@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Item Details</title>
+</head>
+<body>
+
+<div id="details"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+fetch(`/api/items/${id}`)
+.then(res => res.json())
+.then(item => {
+  document.getElementById("details").innerHTML = `
+    <h2>${item.title}</h2>
+    <p>${item.description}</p>
+  `;
+});
+</script>
+
+</body>
+</html>
