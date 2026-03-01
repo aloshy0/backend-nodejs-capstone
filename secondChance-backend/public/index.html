@@ -4,25 +4,18 @@
   <title>SecondChance Marketplace</title>
   <style>
     body {
+      font-family: Arial;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
+      background: #f4f4f4;
     }
 
     header {
-      background-color: #2f3e4e;
+      background: #2f4154;
       color: white;
       padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    header a {
-      color: white;
-      margin-left: 15px;
-      text-decoration: none;
-      font-weight: bold;
     }
 
     .container {
@@ -39,32 +32,35 @@
       background: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .card h3 {
-      margin-top: 0;
+      margin: 0 0 10px;
     }
 
-    .empty {
-      text-align: center;
-      color: #777;
-      font-size: 18px;
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div><strong>SecondChance Marketplace</strong></div>
-  <div>
+  <h2>SecondChance Marketplace</h2>
+  <div class="nav-links">
     <a href="/register.html">Register</a>
     <a href="/login.html">Login</a>
   </div>
 </header>
 
 <div class="container">
-  <div id="itemsContainer" class="items"></div>
+  <div id="itemsContainer" class="items">
+    Loading items...
+  </div>
 </div>
 
 <script>
@@ -74,27 +70,27 @@ async function loadItems() {
     const items = await response.json();
 
     const container = document.getElementById("itemsContainer");
+    container.innerHTML = "";
 
-    if (!items || items.length === 0) {
-      container.innerHTML = "<div class='empty'>No items available.</div>";
+    if (items.length === 0) {
+      container.innerHTML = "<p>No items available.</p>";
       return;
     }
-
-    container.innerHTML = "";
 
     items.forEach(item => {
       const card = document.createElement("div");
       card.className = "card";
+
       card.innerHTML = `
         <h3>${item.title}</h3>
         <p>${item.description}</p>
       `;
+
       container.appendChild(card);
     });
 
-  } catch (error) {
-    document.getElementById("itemsContainer").innerHTML =
-      "<div class='empty'>Failed to load items.</div>";
+  } catch (err) {
+    document.getElementById("itemsContainer").innerHTML = "Error loading items";
   }
 }
 
