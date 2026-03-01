@@ -19,7 +19,9 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd secondChance-backend
+          npm install
 
       - name: Finish
         run: echo "CI Successful"
