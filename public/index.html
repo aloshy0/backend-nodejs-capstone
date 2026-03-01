@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SecondChance - MainPage</title>
+  <style>
+    body { font-family: Arial; background:#f4f6f9; }
+    header { background:#2c3e50; color:white; padding:15px; }
+    .nav { float:right; }
+    .item { background:white; margin:10px; padding:15px; border-radius:8px; }
+  </style>
+</head>
+<body>
+
+<header>
+  SecondChance Marketplace
+  <span class="nav">
+    <a href="register.html" style="color:white;">Register</a>
+  </span>
+</header>
+
+<div id="items"></div>
+
+<script>
+fetch("/api/items")
+.then(res => res.json())
+.then(data => {
+  const container = document.getElementById("items");
+  data.forEach(item => {
+    container.innerHTML += `
+      <div class="item">
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <a href="details.html?id=${item._id}">View Details</a>
+      </div>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
