@@ -8,7 +8,7 @@ let db;
 async function connectToDatabase() {
   if (!db) {
     await client.connect();
-    db = client.db(); // Railway MongoDB auto-uses default DB
+    db = client.db("railway"); // force DB name
   }
   return db;
 }
