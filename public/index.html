@@ -1,41 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <span id="usernameDisplay" class="nav"></span>
-  <title>SecondChance - MainPage</title>
+  <meta charset="UTF-8">
+  <title>SecondChance Marketplace</title>
+
   <style>
-    body { font-family: Arial; background:#f4f6f9; }
-    header { background:#2c3e50; color:white; padding:15px; }
-    .nav { float:right; }
-    .item { background:white; margin:10px; padding:15px; border-radius:8px; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .item-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .item-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .item-card h3 {
+      margin: 0 0 10px;
+      color: #2c3e50;
+    }
+
+    .item-card p {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      background: #3498db;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #777;
+      margin-top: 50px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
 
 <header>
-  SecondChance Marketplace
-  <span class="nav">
-    <a href="register.html" style="color:white;">Register</a>
-  </span>
+  <h2>SecondChance Marketplace</h2>
+  <div class="nav-links">
+    <span id="usernameDisplay"></span>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+  </div>
 </header>
 
-<div id="items"></div>
+<div class="container">
+  <div id="itemsContainer" class="items-grid"></div>
+  <div id="emptyMessage" class="empty-message"></div>
+</div>
 
 <script>
-fetch("/api/items")
-.then(res => res.json())
-.then(data => {
-  const container = document.getElementById("items");
-  data.forEach(item => {
-    container.innerHTML += `
-      <div class="item">
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-        <a href="details.html?id=${item._id}">View Details</a>
-      </div>
-    `;
-  });
-});
+  const username = localStorage.getItem("username");
+  if (username) {
+    document.getElementById("usernameDisplay").innerText = "Welcome, " + username;
+  }
+
+  async function loadItems() {
+    try {
+      const response = await fetch("/api/items");
+      const items = await response.json();
+
+      const container = document.getElementById("itemsContainer");
+      const emptyMessage = document.getElementById("emptyMessage");
+
+      container.innerHTML = "";
+
+      if (!items || items.length === 0) {
+        emptyMessage.innerText = "No items available.";
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "item-card";
+
+        card.innerHTML = `
+          <h3>${item.title || "Untitled Item"}</h3>
+          <p>${item.description || "No description provided."}</p>
+          <a class="btn" href="details.html?id=${item._id}">
+            View Details
+          </a>
+        `;
+
+        container.appendChild(card);
+      });
+
+    } catch (error) {
+      document.getElementById("emptyMessage").innerText =
+        "Error loading items.";
+    }
+  }
+
+  loadItems();
 </script>
 
 </body>
