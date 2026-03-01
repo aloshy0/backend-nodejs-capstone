@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Item Details - SecondChance Marketplace</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f4f4;
+    }
+
+    header {
+      background: #2f4154;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>SecondChance Marketplace</h2>
+  <div class="nav-links">
+    <a href="/">Home</a>
+  </div>
+</header>
+
+<div class="container">
+  <h2 id="title">Loading...</h2>
+  <p id="description"></p>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+async function loadItem() {
+  const response = await fetch(`/api/items/${id}`);
+  const item = await response.json();
+
+  document.getElementById("title").innerText = item.title;
+  document.getElementById("description").innerText = item.description;
+}
+
+loadItem();
+</script>
+
+</body>
+</html>
