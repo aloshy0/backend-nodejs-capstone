@@ -81,11 +81,14 @@ async function loadItems() {
       const card = document.createElement("div");
       card.className = "card";
 
-      card.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-      `;
-
+     card.innerHTML = `
+  <h3>
+    <a href="/item.html?id=${item._id}" style="text-decoration:none;color:#2f4154;">
+      ${item.title}
+    </a>
+  </h3>
+  <p>${item.description}</p>
+`;
       container.appendChild(card);
     });
 
