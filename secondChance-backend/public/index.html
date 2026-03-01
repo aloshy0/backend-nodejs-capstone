@@ -99,19 +99,22 @@
 
 <script>
 
+let allItems = [];
+
 async function loadItems() {
   const response = await fetch("/api/items");
-  const items = await response.json();
-  renderItems(items);
+  allItems = await response.json();
+  renderItems(allItems);
 }
 
-async function searchItems() {
-  const query = document.getElementById("searchInput").value;
+function searchItems() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
 
-  const response = await fetch(`/api/search?q=${query}`);
-  const items = await response.json();
+  const filtered = allItems.filter(item =>
+    item.title.toLowerCase().includes(query)
+  );
 
-  renderItems(items);
+  renderItems(filtered);
 }
 
 function renderItems(items) {
