@@ -1,11 +1,16 @@
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGODB_URL;
 const client = new MongoClient(uri);
 
+let db;
+
 async function connectToDatabase() {
-  await client.connect();
-  return client.db("secondChanceDB");
+  if (!db) {
+    await client.connect();
+    db = client.db(); // Railway MongoDB auto-uses default DB
+  }
+  return db;
 }
 
 module.exports = { connectToDatabase };
